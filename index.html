@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Index</title>
+	<style type="text/css">
+		video{
+			width: 200px;
+			height: 200px;
+		}
+	</style>
+</head>
+<body>
+	<div id="input-div"> 
+		<input type="text" name="" id="peer-id" required placeholder="Room Name">
+		<input type="text" name="" id="user" placeholder="Your Username">
+		<button onclick="createpeer()">Create</button>
+		<button onclick="connectpeer()">Connect</button>
+	</div>
+	<div id="l-video-div">
+			<video id="l-video">
+				
+			</video>
+			<button id="btn-video" onclick="videotoggle()">On/Off</button>
+	</div>
+	<div id="r-video-div">
+	</div>
+
+
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+<script type="text/javascript">
+	var room_id = document.getElementById('peer-id');
+	var user = document.getElementById('user')
+	var lvideo = document.getElementById('l-video')
+	var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+	var local_stream;
+	var p
+	var camtoggle = false
+	function createpeer(){
+		p = new Peer(room_id.value)
+		 p.on('open',(id)=>{
+		 	console.log('a peer connected with id ->',id)
+		 	getUserMedia({video: true, audio: false},(stream)=>{
+		 		local_stream = stream
+		 		setLocalStream(stream)
+		 		camtoggle = true
+		 	},(err)=>{
+		 		console.log('error occured')
+		 	})
+		 })
+
+		 p.on('call',(call)=>{
+		 	call.answer(local_stream)
+		 	call.on('stream',(stream)=>{
+		 		setRemoteStream(stream,call.peer)
+		 	})
+		 })
+
+
+
+	}
+
+function connectpeer(){
+	p = new Peer(user.value)
+	p.on('open', (id)=>{
+        console.log("Connected with Id: "+id)
+        getUserMedia({video: true, audio: false}, (stream)=>{
+            local_stream = stream;
+            setLocalStream(local_stream)
+            camtoggle = true
+            let call = p.call(room_id.value, stream)
+            call.on('stream', (stream)=>{
+                setRemoteStream(stream,user.value);
+            })
+        }, (err)=>{
+            console.log(err)
+        })
+
+    })
+}
+
+function videotoggle(){
+	if(camtoggle){
+		var stream = lvideo.srcObject
+		var tracks = stream.getTracks()
+		tracks[0].stop()
+		camtoggle = false
+	}
+	else{
+
+	        getUserMedia({video: true, audio: false}, (stream)=>{
+	            local_stream = stream;
+	            setLocalStream(local_stream)
+	            camtoggle = true
+	            let call = p.call(room_id.value, stream)
+	            call.on('stream', (stream)=>{
+	                setRemoteStream(stream,user.value);
+	            })
+	        }, (err)=>{
+	            console.log(err)
+	        })
+
+	}
+}
+
+function setLocalStream(stream){
+	lvideo.srcObject = stream
+	lvideo.muted = true
+	lvideo.play()
+}
+
+function setRemoteStream(stream,peer_id){
+	if(document.getElementById(peer_id)){
+		var rvideo = document.getElementById(peer_id)
+		rvideo.srcObject = stream
+		rvideo.muted = true
+		rvideo.play()
+	}
+	else{
+		var rvidiv = document.getElementById('r-video-div')
+		var rvideo = document.createElement('video')
+		rvideo.setAttribute("id",peer_id)
+		rvideo.srcObject = stream
+		rvideo.muted = true
+		rvideo.play()
+		rvidiv.appendChild(rvideo)
+	}
+
+}
+
+
+
+</script>	
+</body>
+</html>
