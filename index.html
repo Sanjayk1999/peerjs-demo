@@ -35,8 +35,13 @@
 	var local_stream;
 	var p
 	var camtoggle = false
+	var config = {'iceServers': [
+    	{ url: 'stun:stun.l.google.com:19302' },
+    	{ url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
+  			]}
+	
 	function createpeer(){
-		p = new Peer(room_id.value)
+		p = new Peer(room_id.value,config)
 		 p.on('open',(id)=>{
 		 	console.log('a peer connected with id ->',id)
 		 	getUserMedia({video: true, audio: false},(stream)=>{
@@ -60,7 +65,7 @@
 	}
 
 function connectpeer(){
-	p = new Peer(user.value)
+	p = new Peer(user.value,config)
 	p.on('open', (id)=>{
         console.log("Connected with Id: "+id)
         getUserMedia({video: true, audio: false}, (stream)=>{
