@@ -132,7 +132,6 @@ function setRemoteStream(stream,peer_id){
 	if(document.getElementById(peer_id)){
 		var rvideo = document.getElementById(peer_id)
 		rvideo.srcObject = stream
-		rvideo.muted = true
 		rvideo.play()
 	}
 	else{
@@ -140,7 +139,6 @@ function setRemoteStream(stream,peer_id){
 		var rvideo = document.createElement('video')
 		rvideo.setAttribute("id",peer_id)
 		rvideo.srcObject = stream
-		rvideo.muted = true
 		rvideo.play()
 		rvidiv.appendChild(rvideo)
 	}
