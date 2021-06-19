@@ -36,19 +36,21 @@
 	var local_stream;
 	var p
 	var camtoggle = false
-	var config = {
-        'iceServers': [
-            { url: 'stun:stun1.l.google.com:19302' },
-            {
-                url: 'turn:numb.viagenie.ca',
-                credential: 'muazkh',
-                username: 'webrtc@live.com'
-            }
-        ]
-    }
+	var config_l = {
+	host: 'peerjs.92k.de',
+	port: 443,
+	debug: 3,
+	config: {
+		iceServers: [
+			{ urls: 'stun:stun.l.google.com:19302' },
+			{ urls: 'stun:stun1.l.google.com:19302' },
+			{ urls: 'turn:your.own.host:3478', username: 'someuser', credential: 'somepass'}
+		]
+	}
+}
 	
 	function createpeer(){
-		p = new Peer(room_id.value,config)
+		p = new Peer(room_id.value,config_l)
 		 p.on('open',(id)=>{
 		 	console.log('a peer connected with id ->',id)
 		 	getUserMedia({video: true, audio: false},(stream)=>{
