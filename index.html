@@ -35,10 +35,16 @@
 	var local_stream;
 	var p
 	var camtoggle = false
-	var config = {'iceServers': [
-    	{ url: 'stun:stun.l.google.com:19302' },
-    	{ url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
-  			]}
+	var config = {
+        'iceServers': [
+            { url: 'stun:stun1.l.google.com:19302' },
+            {
+                url: 'turn:numb.viagenie.ca',
+                credential: 'muazkh',
+                username: 'webrtc@live.com'
+            }
+        ]
+    }
 	
 	function createpeer(){
 		p = new Peer(room_id.value,config)
