@@ -39,14 +39,15 @@
 	var config_l = {
 	host: 'peerjs.92k.de',
 	port: 443,
-	debug: 3,
-	config: {
-		iceServers: [
-			{ urls: 'stun:stun.l.google.com:19302' },
-			{ urls: 'stun:stun1.l.google.com:19302' },
-			{ urls: 'turn:your.own.host:3478', username: 'someuser', credential: 'somepass'}
+	config: {'iceServers': [
+			{ url: 'stun:stun.l.google.com:19302' },
+			{ url: 'stun:stun1.l.google.com:19302' },
+			{ url: 'stun:stun2.l.google.com:19302' },
+			{ url: 'stun:stun3.l.google.com:19302' },
+			{ url: 'stun:stun4.l.google.com:19302' }
 		]
-	}
+	},
+	debug: 3
 }
 	
 	function createpeer(){
@@ -74,7 +75,7 @@
 	}
 
 function connectpeer(){
-	p = new Peer(user.value,config)
+	p = new Peer(user.value,config_l)
 	p.on('open', (id)=>{
         console.log("Connected with Id: "+id)
         getUserMedia({video: true, audio: false}, (stream)=>{
