@@ -59,7 +59,7 @@
 		p = new Peer(room_id.value,config_l)
 		 p.on('open',(id)=>{
 		 	console.log('a peer connected with id ->',id)
-		 	getUserMedia({video: true, audio: false},(stream)=>{
+		 	getUserMedia({video: true, audio: true},(stream)=>{
 		 		local_stream = stream
 		 		setLocalStream(stream)
 		 		camtoggle = true
@@ -83,7 +83,7 @@ function connectpeer(){
 	p = new Peer(user.value,config_l)
 	p.on('open', (id)=>{
         console.log("Connected with Id: "+id)
-        getUserMedia({video: true, audio: false}, (stream)=>{
+        getUserMedia({video: true, audio: true}, (stream)=>{
             local_stream = stream;
             setLocalStream(local_stream)
             camtoggle = true
@@ -107,7 +107,7 @@ function videotoggle(){
 	}
 	else{
 
-	        getUserMedia({video: true, audio: false}, (stream)=>{
+	        getUserMedia({video: true, audio: true}, (stream)=>{
 	            local_stream = stream;
 	            setLocalStream(local_stream)
 	            camtoggle = true
